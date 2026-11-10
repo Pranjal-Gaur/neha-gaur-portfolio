@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://pranjal-gaur.github.io/neha-gaur-portfolio/sitemap.xml

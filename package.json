@@ -1,0 +1,15 @@
+{
+  "name": "neha-gaur-portfolio",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Neha Gaur's academic portfolio",
+  "type": "module",
+  "scripts": {
+    "dev": "node scripts/serve.mjs",
+    "test": "playwright test"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "^4.10.2",
+    "@playwright/test": "^1.56.1"
+  }
+}
