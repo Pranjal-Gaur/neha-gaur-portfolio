@@ -36,6 +36,28 @@ test("publication categories show the right papers and status", async ({ page })
   await expect(page.locator(".publication:visible")).toHaveCount(6);
 });
 
+test("scholarly links navigate in the same tab without requiring popups", async ({ page, context }) => {
+  const allowedHosts = new Set(["doi.org", "www.researchgate.net", "orcid.org"]);
+  await context.route((url) => allowedHosts.has(url.hostname), (route) =>
+    route.fulfill({ contentType: "text/html", body: "<title>External destination</title><p>Article or researcher profile</p>" })
+  );
+  await page.goto("./");
+  const links = await page.locator('a[href^="https://"]').evaluateAll((elements) =>
+    elements.map((element) => ({ href: element.href, target: element.target }))
+  );
+  expect(links).toHaveLength(13);
+  for (const [index, { href, target }] of links.entries()) {
+    expect(target).toBe("");
+    await page.goto("./");
+    await page.locator('a[href^="https://"]').nth(index).click();
+    await expect(page).toHaveURL(href);
+    await expect(page).toHaveTitle("External destination");
+    expect(context.pages()).toHaveLength(1);
+    await page.goBack();
+    await expect(page).toHaveTitle("Neha Gaur | Mathematical Logic");
+  }
+});
+
 test("navigation works with mobile menu, keyboard dismissal, and section focus", async ({ page, isMobile }) => {
   await page.goto("./");
   const navigation = page.getByRole("navigation", { name: "Main navigation" });
