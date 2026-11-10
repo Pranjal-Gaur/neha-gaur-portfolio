@@ -11,7 +11,7 @@ test("loads complete academic content, fonts, and images without errors", async 
   await expect(page.locator(".hero-affiliation")).toContainText("TU Wien");
   await expect(page.locator(".education-note")).toContainText("Banaras Hindu University");
   await expect(page.locator(".publication")).toHaveCount(6);
-  await page.locator(".nature-section").scrollIntoViewIfNeeded();
+  await page.locator(".hobbies-section").scrollIntoViewIfNeeded();
   await expect.poll(() => page.locator("img").evaluateAll((images) => images.every((image) => image.complete && image.naturalWidth > 0))).toBe(true);
   const fontStatus = await page.evaluate(async () => {
     await document.fonts.ready;
@@ -133,8 +133,8 @@ test("publication categories show the right papers and status", async ({ page })
   await expect(page.locator(".publication:visible")).toHaveCount(6);
 });
 
-test("scholarly links open new tabs and leave the portfolio open", async ({ page, context }) => {
-  const allowedHosts = new Set(["doi.org", "www.researchgate.net", "orcid.org"]);
+test("scholarly and attribution links open new tabs and leave the portfolio open", async ({ page, context }) => {
+  const allowedHosts = new Set(["doi.org", "www.researchgate.net", "orcid.org", "commons.wikimedia.org", "creativecommons.org"]);
   await context.route((url) => allowedHosts.has(url.hostname), (route) =>
     route.fulfill({ contentType: "text/html", body: "<title>External destination</title><p>Article or researcher profile</p>" })
   );
@@ -143,7 +143,7 @@ test("scholarly links open new tabs and leave the portfolio open", async ({ page
   const links = await page.locator('a[href^="https://"]').evaluateAll((elements) =>
     elements.map((element) => ({ href: element.href, target: element.target, rel: element.rel }))
   );
-  expect(links).toHaveLength(13);
+  expect(links).toHaveLength(15);
   for (const [index, { href, target, rel }] of links.entries()) {
     expect(target).toBe("_blank");
     expect(rel.split(/\s+/)).toEqual(expect.arrayContaining(["noopener", "noreferrer"]));
@@ -183,6 +183,14 @@ test("navigation works with mobile menu, keyboard dismissal, and section focus",
   if (isMobile) {
     await expect(navigation).toBeHidden();
     await expect(page.locator("#publications")).toBeFocused();
+    await page.getByRole("button", { name: "Menu" }).click();
+  }
+  await navigation.getByRole("link", { name: "Beyond maths", exact: true }).click();
+  await expect(page).toHaveURL(/#beyond-mathematics$/);
+  await expect(page.locator("#hobbies-title")).toBeVisible();
+  if (isMobile) {
+    await expect(navigation).toBeHidden();
+    await expect(page.locator("#beyond-mathematics")).toBeFocused();
   }
 });
 
@@ -220,6 +228,12 @@ for (const basePath of ["/", "/neha-gaur-portfolio/"]) {
       const response = await request.get(url);
       expect(response.ok(), url).toBe(true);
     }
+    const background = await page.locator("body").evaluate((element) => getComputedStyle(element, "::before").backgroundImage);
+    const backgroundUrl = background.match(/url\("([^"]+)"\)/)?.[1];
+    expect(backgroundUrl).toBe(new URL(`${basePath}assets/mount-everest.webp`, page.url()).href);
+    const backgroundResponse = await request.get(backgroundUrl);
+    expect(backgroundResponse.ok()).toBe(true);
+    expect(backgroundResponse.headers()["content-type"]).toBe("image/webp");
     const anchors = await page.locator('a[href^="#"]').evaluateAll((elements) => elements.map((element) => element.hash.slice(1)));
     for (const id of anchors) await expect(page.locator(`[id="${id}"]`)).toHaveCount(1);
     await expect(page.locator('a[href="mailto:gaur.neha1947@gmail.com"]')).toHaveCount(1);
@@ -259,6 +273,28 @@ test("search, sharing, and error-page links use Neha's canonical address", async
       expect(html).toContain(`href="${canonical}styles.css?`);
     }
   }
+});
+
+test("whole-page mountain background and hobbies include the photo's licence", async ({ page, request }) => {
+  await page.goto("./");
+  await expect(page.locator("body")).toHaveClass("mountain-background");
+  const background = await page.locator("body").evaluate((element) => {
+    const style = getComputedStyle(element, "::before");
+    return { position: style.position, image: style.backgroundImage, events: style.pointerEvents };
+  });
+  expect(background.position).toBe("fixed");
+  expect(background.image).toContain("mount-everest.webp");
+  expect(background.events).toBe("none");
+  await expect(page.locator(".hobby-description")).toHaveText("Away from mathematics, I enjoy hiking and mountain trekking.");
+  await expect(page.locator(".hobby-tags span")).toHaveText(["Hiking", "Mountain trekking"]);
+  const credit = page.locator(".photo-credit");
+  await expect(credit).toContainText("Vyacheslav Argenberg");
+  await expect(credit.locator('a[href="https://commons.wikimedia.org/wiki/File:Everest,_Himalayas.jpg"]')).toHaveCount(1);
+  await expect(credit.locator('a[href="https://creativecommons.org/licenses/by/4.0/"]')).toHaveText(/CC BY 4.0/);
+  await expect(page.locator(".photo-changes")).toContainText("Resized and converted to WebP");
+  const licence = await request.get("./assets/mount-everest-license.txt");
+  expect(licence.ok()).toBe(true);
+  expect(await licence.text()).toContain("Photographer and copyright holder: Vyacheslav Argenberg");
 });
 
 test("contact emails match their links and use clear sans-serif numerals", async ({ page }) => {
@@ -305,6 +341,8 @@ test("all content and navigation remain available without JavaScript", async ({ 
   await expect(page.locator(".publication:visible")).toHaveCount(6);
   await expect(page.locator(".talk:visible")).toHaveCount(12);
   await expect(page.locator(".achievement:visible")).toHaveCount(10);
+  await expect(page.locator(".hobby-description")).toBeVisible();
+  await expect(page.locator(".photo-credit")).toContainText("CC BY 4.0");
   await expect(page.getByRole("link", { name: "gaur.neha1947@gmail.com", exact: true })).toBeVisible();
   await expect(page.getByRole("link", { name: "neha.gaur@tuwien.ac.at", exact: true })).toBeVisible();
   await expect(page.getByRole("button", { name: "All work" })).toBeHidden();

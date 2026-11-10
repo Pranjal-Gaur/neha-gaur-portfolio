@@ -6,10 +6,10 @@ A responsive academic portfolio for Neha Gaur, built with plain HTML, CSS, and J
 
 ## Updating content
 
-- Edit `site/index.html` for the introduction, research, publications, career, talks, and contact details.
+- Edit `site/index.html` for the introduction, research, publications, career, talks, hobbies, and contact details.
 - The Contact section lists Gmail and TU Wien email addresses. Keep each displayed address identical to its `mailto:` destination. Email addresses use the sans-serif font with lining numerals so the digit `1` is not mistaken for a lowercase `i`.
 - Replace `site/assets/Neha-Gaur-CV.pdf` to update the downloadable CV.
-- Replace the images in `site/assets/` to change the portrait or woodland banner.
+- Replace the images in `site/assets/` to change the portrait or mountain background. Preserve or update the background's attribution, licence, and modification notice in the hobbies section and `site/assets/mount-everest-license.txt`.
 - Edit `site/styles.css` for colours, type, spacing, and responsive layouts. When changing styles, update the stylesheet version query in `site/index.html` and `site/404.html` so returning visitors receive the new CSS.
 - Publications have `data-type="journal"` or `data-type="preprint"`. When adding entries, also update the filter counts and the initial publication count.
 - Keep all conference presentations and participation in `.talks-panel`, and all additional research achievements in `.achievement-list`. These are complete lists from the supplied CV, not selected highlights: 12 conference entries (including both TACL talks) and 10 achievements. Preserve event names, locations, roles, talk titles, award years, and examination ranks.
@@ -22,6 +22,8 @@ The 2025 date for the 28th Conference on Applications of Logic in Philosophy and
 Scholarly links open in a new tab, including paper titles, paper buttons, ResearchGate, ORCID, and the project DOI, leaving the portfolio open. Use native `target="_blank"` links with `rel="noopener noreferrer"` and accessible new-tab notices. Embedded previews may not support new tabs; use the public website in a regular browser rather than changing the site's navigation to work around a preview limitation. Journal DOIs lead to publishers, whose verification screens or subscription requirements are outside this website's control. Direct preprint links require verified individual URLs or files the author has permission to publish.
 
 The supplied CV and both listed contact emails were approved for public publication. The TU Wien email was supplied separately from the CV; the downloadable PDF remains unchanged. Do not add private contact information or confidential material.
+
+The hiking and mountain-trekking interests were supplied separately from the CV. They do not imply that Neha has climbed Mount Everest. The decorative mountain image is a fixed, softly tinted whole-page background; translucent section backgrounds preserve the selected design while keeping text readable. The former woodland banner has been replaced by the "Beyond mathematics" hobbies section.
 
 ## Local preview
 
@@ -43,7 +45,7 @@ npx playwright install chromium
 npm test
 ```
 
-The browser checks cover desktop and mobile layouts, complete conference and achievement content, navigation, publication filtering, new-tab scholarly links that preserve the portfolio tab, citation copying and fallback, accessibility, canonical metadata, assets and CV downloads at both hosting base paths, and JavaScript-disabled rendering. External-navigation regression checks intercept publisher/profile requests to test the click behaviour without depending on third-party availability.
+The browser checks cover desktop and mobile layouts, complete conference and achievement content, hobbies and background attribution, navigation, publication filtering, new-tab external links that preserve the portfolio tab, citation copying and fallback, accessibility, canonical metadata, assets and CV downloads at both hosting base paths, and JavaScript-disabled rendering. External-navigation regression checks intercept publisher/profile and attribution requests to test the click behaviour without depending on third-party availability.
 
 ## Deployment
 
@@ -64,6 +66,8 @@ If the primary hostname changes, update the canonical URL, social metadata, stru
 
 ## Assets and rights
 
-The portrait, woodland photo, CV, and personal content were supplied for this portfolio. No redistribution licence is granted for those materials. Both photos are locally optimised; the original supplied CV is served unchanged.
+The portrait, original woodland photo (retained but no longer displayed), CV, and personal content were supplied for this portfolio. No redistribution licence is granted for those materials. The supplied photos are locally optimised; the original supplied CV is served unchanged.
+
+The mountain background is ["Everest, Himalayas" by Vyacheslav Argenberg](https://commons.wikimedia.org/wiki/File:Everest,_Himalayas.jpg), used under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/). It was resized to 1600 x 1067 and converted to WebP, with viewport cropping and a light CSS tint for display. Attribution and the licence link appear in the hobbies section; provenance is also included in `site/assets/mount-everest-license.txt`. This photograph retains its CC BY 4.0 licence and is excluded from the site's "All rights reserved" notice. The Britannica reference image used during design previews is not part of the published site.
 
 DM Sans and Cormorant Garamond are self-hosted to avoid third-party font requests. Their SIL Open Font License notices are included in `site/assets/fonts/`.

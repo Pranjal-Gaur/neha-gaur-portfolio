@@ -1,0 +1,15 @@
+Asset: mount-everest.webp
+Title: Everest, Himalayas
+Photographer and copyright holder: Vyacheslav Argenberg
+Source: https://commons.wikimedia.org/wiki/File:Everest,_Himalayas.jpg
+Original: https://upload.wikimedia.org/wikipedia/commons/9/90/Everest%2C_Himalayas.jpg
+License: Creative Commons Attribution 4.0 International (CC BY 4.0)
+License URL: https://creativecommons.org/licenses/by/4.0/
+Legal code: https://creativecommons.org/licenses/by/4.0/legalcode.en
+
+Changes: resized from 4032 x 2688 to 1600 x 1067 and converted to WebP.
+CSS crops the image to the viewport and overlays a light tint for readability.
+
+The photograph remains available under CC BY 4.0, independently of the
+website's copyright notice. Its use does not imply the photographer's
+endorsement of this website or its subject.
