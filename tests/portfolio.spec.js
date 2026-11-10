@@ -233,6 +233,28 @@ test("all internal links and assets resolve at the GitHub project base path", as
   expect(download.suggestedFilename()).toBe("Neha-Gaur-CV.pdf");
 });
 
+test("contact emails match their links and use clear sans-serif numerals", async ({ page }) => {
+  await page.goto("./");
+  await expect(page.locator(".contact-email")).toHaveCount(2);
+  for (const [label, address] of [
+    ["Gmail", "gaur.neha1947@gmail.com"],
+    ["TU Wien", "neha.gaur@tuwien.ac.at"]
+  ]) {
+    const entry = page.locator(".contact-email").filter({
+      has: page.getByText(label, { exact: true })
+    });
+    await expect(entry.locator(".email-address")).toHaveText(address);
+    await expect(entry.getByRole("link", { name: address, exact: true })).toHaveAttribute("href", `mailto:${address}`);
+    await expect(entry.getByRole("link")).toBeVisible();
+    const typography = await entry.locator(".email-address").evaluate((element) => {
+      const style = getComputedStyle(element);
+      return { family: style.fontFamily, numerals: style.fontVariantNumeric };
+    });
+    expect(typography.family).toContain("DM Sans");
+    expect(typography.numerals).toContain("lining-nums");
+  }
+});
+
 test("the complete page passes WCAG A and AA automated checks", async ({ page }) => {
   await page.goto("./");
   await page.locator("#contact").scrollIntoViewIfNeeded();
@@ -255,6 +277,8 @@ test("all content and navigation remain available without JavaScript", async ({ 
   await expect(page.locator(".publication:visible")).toHaveCount(6);
   await expect(page.locator(".talk:visible")).toHaveCount(12);
   await expect(page.locator(".achievement:visible")).toHaveCount(10);
+  await expect(page.getByRole("link", { name: "gaur.neha1947@gmail.com", exact: true })).toBeVisible();
+  await expect(page.getByRole("link", { name: "neha.gaur@tuwien.ac.at", exact: true })).toBeVisible();
   await expect(page.getByRole("button", { name: "All work" })).toBeHidden();
   await expect(page.getByRole("button", { name: "Copy citation" }).first()).toBeHidden();
   await expect(page.getByRole("link", { name: /Download CV/ })).toBeVisible();

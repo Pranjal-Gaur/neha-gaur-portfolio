@@ -7,6 +7,7 @@ A responsive academic portfolio for Neha Gaur, built with plain HTML, CSS, and J
 ## Updating content
 
 - Edit `site/index.html` for the introduction, research, publications, career, talks, and contact details.
+- The Contact section lists Gmail and TU Wien email addresses. Keep each displayed address identical to its `mailto:` destination. Email addresses use the sans-serif font with lining numerals so the digit `1` is not mistaken for a lowercase `i`.
 - Replace `site/assets/Neha-Gaur-CV.pdf` to update the downloadable CV.
 - Replace the images in `site/assets/` to change the portrait or woodland banner.
 - Edit `site/styles.css` for colours, type, spacing, and responsive layouts. When changing styles, update the stylesheet version query in `site/index.html` and `site/404.html` so returning visitors receive the new CSS.
@@ -20,7 +21,7 @@ The 2025 date for the 28th Conference on Applications of Logic in Philosophy and
 
 Scholarly links open in a new tab, including paper titles, paper buttons, ResearchGate, ORCID, and the project DOI, leaving the portfolio open. Use native `target="_blank"` links with `rel="noopener noreferrer"` and accessible new-tab notices. Embedded previews may not support new tabs; use the public website in a regular browser rather than changing the site's navigation to work around a preview limitation. Journal DOIs lead to publishers, whose verification screens or subscription requirements are outside this website's control. Direct preprint links require verified individual URLs or files the author has permission to publish.
 
-The supplied CV and contact email were approved for public publication. Do not add private contact information or confidential material.
+The supplied CV and both listed contact emails were approved for public publication. The TU Wien email was supplied separately from the CV; the downloadable PDF remains unchanged. Do not add private contact information or confidential material.
 
 ## Local preview
 

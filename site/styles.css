@@ -202,8 +202,11 @@ h2 em { color: #637551; }
 .contact-section > div > p:not(.eyebrow) { color: var(--body); font-size: 12px; margin-top: 25px; }
 .contact-details { padding-top: 20px; }
 .contact-details > .eyebrow { font-size: 9px; color: var(--muted); }
-.email-link { display: flex; align-items: center; justify-content: space-between; gap: 12px; font-family: var(--serif); font-size: 30px; line-height: 1.4; border-bottom: 1px solid #c4cbb9; padding: 12px 0 18px; }
-.email-link span { font-family: var(--sans); font-size: 20px; }
+.contact-email { margin-top: 20px; }
+.email-label { display: block; font-size: 9px; color: var(--muted); letter-spacing: 1.2px; text-transform: uppercase; }
+.email-link { display: flex; align-items: center; justify-content: space-between; gap: 12px; font-family: var(--sans); font-size: 22px; font-variant-numeric: lining-nums tabular-nums; line-height: 1.5; border-bottom: 1px solid #c4cbb9; padding: 8px 0 16px; }
+.email-address { min-width: 0; overflow-wrap: anywhere; }
+.email-link > [aria-hidden] { font-size: 18px; flex-shrink: 0; }
 .contact-location { display: flex; align-items: flex-start; gap: 12px; margin-top: 26px; font-size: 11px; color: var(--body); }
 .contact-location strong { font-weight: 400; }
 .location-dot { width: 8px; height: 10px; border: 1px solid var(--green); border-radius: 50% 50% 50% 0; transform: rotate(-45deg); margin-top: 6px; }
@@ -240,7 +243,7 @@ h2 em { color: #637551; }
   .journey-section { gap: 60px; }
   .community-grid { gap: 40px; }
   .contact-section { gap: 60px; }
-  .email-link { font-size: 26px; }
+  .email-link { font-size: 20px; }
 }
 
 @media (max-width: 800px) {
@@ -296,7 +299,7 @@ h2 em { color: #637551; }
   .outreach-icon { width: 29px; height: 29px; right: 18px; top: 21px; }
   .outreach-panel > .eyebrow { letter-spacing: 1px; }
   .contact-section { gap: 34px; }
-  .email-link { font-size: 23px; }
+  .email-link { font-size: 17px; }
   .social-links { gap: 13px; font-size: 9px; }
 }
 
@@ -373,7 +376,7 @@ h2 em { color: #637551; }
   .nature-content .eyebrow { font-size: 8px; }
   .contact-section { grid-template-columns: 1fr; gap: 25px; }
   .contact-section > div > p:not(.eyebrow) { font-size: 12px; }
-  .email-link { font-size: clamp(23px, 6.8vw, 31px); gap: 5px; }
+  .email-link { font-size: clamp(16px, 4.8vw, 22px); gap: 10px; }
   .social-links { gap: 22px; font-size: 10px; }
   .footer-inner { flex-wrap: wrap; gap: 10px; padding-block: 22px; }
   .footer-name { font-size: 24px; }
