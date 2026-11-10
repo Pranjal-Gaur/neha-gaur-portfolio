@@ -284,6 +284,7 @@ test("whole-page mountain background and hobbies include the photo's licence", a
   });
   expect(background.position).toBe("fixed");
   expect(background.image).toContain("mount-everest.webp");
+  expect(background.image.match(/rgba\(247, 245, 239, 0\.94\)/g)).toHaveLength(2);
   expect(background.events).toBe("none");
   await expect(page.locator(".hobby-description")).toHaveText("Away from mathematics, I enjoy hiking and mountain trekking.");
   await expect(page.locator(".hobby-tags span")).toHaveText(["Hiking", "Mountain trekking"]);

@@ -23,7 +23,7 @@ Scholarly links open in a new tab, including paper titles, paper buttons, Resear
 
 The supplied CV and both listed contact emails were approved for public publication. The TU Wien email was supplied separately from the CV; the downloadable PDF remains unchanged. Do not add private contact information or confidential material.
 
-The hiking and mountain-trekking interests were supplied separately from the CV. They do not imply that Neha has climbed Mount Everest. The decorative mountain image is a fixed, softly tinted whole-page background; translucent section backgrounds preserve the selected design while keeping text readable. The former woodland banner has been replaced by the "Beyond mathematics" hobbies section.
+The hiking and mountain-trekking interests were supplied separately from the CV. They do not imply that Neha has climbed Mount Everest. The decorative mountain image is a fixed whole-page background with a 94% cream tint, leaving only 6% of the photograph visible so text takes priority. Translucent section backgrounds soften it further. The former woodland banner has been replaced by the "Beyond mathematics" hobbies section.
 
 ## Local preview
 

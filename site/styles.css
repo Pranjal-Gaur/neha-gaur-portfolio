@@ -40,7 +40,7 @@
 html { scroll-behavior: smooth; scroll-padding-top: 104px; }
 body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(--sans); font-size: 15px; line-height: 1.75; -webkit-font-smoothing: antialiased; }
 .mountain-background { position: relative; isolation: isolate; background: #e7eceb; }
-.mountain-background::before { content: ""; position: fixed; inset: 0; z-index: -1; background: linear-gradient(rgb(247 245 239 / 83%), rgb(247 245 239 / 83%)), url("./assets/mount-everest.webp") center / cover no-repeat; pointer-events: none; }
+.mountain-background::before { content: ""; position: fixed; inset: 0; z-index: -1; background: linear-gradient(rgb(247 245 239 / 94%), rgb(247 245 239 / 94%)), url("./assets/mount-everest.webp") center / cover no-repeat; pointer-events: none; }
 button, a { -webkit-tap-highlight-color: transparent; }
 button { font: inherit; }
 a { color: inherit; text-decoration: none; text-underline-offset: 4px; }
