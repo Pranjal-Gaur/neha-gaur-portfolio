@@ -36,25 +36,34 @@ test("publication categories show the right papers and status", async ({ page })
   await expect(page.locator(".publication:visible")).toHaveCount(6);
 });
 
-test("scholarly links navigate in the same tab without requiring popups", async ({ page, context }) => {
+test("scholarly links open new tabs and leave the portfolio open", async ({ page, context }) => {
   const allowedHosts = new Set(["doi.org", "www.researchgate.net", "orcid.org"]);
   await context.route((url) => allowedHosts.has(url.hostname), (route) =>
     route.fulfill({ contentType: "text/html", body: "<title>External destination</title><p>Article or researcher profile</p>" })
   );
   await page.goto("./");
+  const portfolioUrl = page.url();
   const links = await page.locator('a[href^="https://"]').evaluateAll((elements) =>
-    elements.map((element) => ({ href: element.href, target: element.target }))
+    elements.map((element) => ({ href: element.href, target: element.target, rel: element.rel }))
   );
   expect(links).toHaveLength(13);
-  for (const [index, { href, target }] of links.entries()) {
-    expect(target).toBe("");
-    await page.goto("./");
-    await page.locator('a[href^="https://"]').nth(index).click();
-    await expect(page).toHaveURL(href);
-    await expect(page).toHaveTitle("External destination");
-    expect(context.pages()).toHaveLength(1);
-    await page.goBack();
+  for (const [index, { href, target, rel }] of links.entries()) {
+    expect(target).toBe("_blank");
+    expect(rel.split(/\s+/)).toEqual(expect.arrayContaining(["noopener", "noreferrer"]));
+    const link = page.locator('a[href^="https://"]').nth(index);
+    await expect(link).toHaveAccessibleName(/opens in a new tab/);
+    const [newTab] = await Promise.all([
+      page.waitForEvent("popup"),
+      link.click()
+    ]);
+    await expect(newTab).toHaveURL(href);
+    await expect(newTab).toHaveTitle("External destination");
+    expect(await newTab.evaluate(() => window.opener)).toBeNull();
+    expect(context.pages()).toHaveLength(2);
+    await expect(page).toHaveURL(portfolioUrl);
     await expect(page).toHaveTitle("Neha Gaur | Mathematical Logic");
+    await newTab.close();
+    expect(context.pages()).toHaveLength(1);
   }
 });
 

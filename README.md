@@ -15,7 +15,7 @@ A responsive academic portfolio for Neha Gaur, built with plain HTML, CSS, and J
 
 The supplied CV and introduction are the primary content sources. The three journal DOIs were checked against Crossref on 10 November 2026; journal metadata follows those records rather than uncertain volume or issue details in the CV. Preprints link to the supplied ResearchGate profile, not to guessed article URLs. ResearchGate blocked automated access, so its live profile content was not independently checked.
 
-Scholarly links open in the same tab, including paper titles, paper buttons, ResearchGate, ORCID, and the project DOI. This avoids dependence on new-tab support in embedded previews. Journal DOIs lead to publishers, whose verification screens or subscription requirements are outside this website's control. Direct preprint links require verified individual URLs or files the author has permission to publish.
+Scholarly links open in a new tab, including paper titles, paper buttons, ResearchGate, ORCID, and the project DOI, leaving the portfolio open. Use native `target="_blank"` links with `rel="noopener noreferrer"` and accessible new-tab notices. Embedded previews may not support new tabs; use the public website in a regular browser rather than changing the site's navigation to work around a preview limitation. Journal DOIs lead to publishers, whose verification screens or subscription requirements are outside this website's control. Direct preprint links require verified individual URLs or files the author has permission to publish.
 
 The supplied CV and contact email were approved for public publication. Do not add private contact information or confidential material.
 
@@ -39,7 +39,7 @@ npx playwright install chromium
 npm test
 ```
 
-The browser checks cover desktop and mobile layouts, navigation, publication filtering, same-tab scholarly links, citation copying and fallback, accessibility, assets, CV downloads, and JavaScript-disabled rendering. External-navigation regression checks intercept publisher/profile requests to test the click behaviour without depending on third-party availability.
+The browser checks cover desktop and mobile layouts, navigation, publication filtering, new-tab scholarly links that preserve the portfolio tab, citation copying and fallback, accessibility, assets, CV downloads, and JavaScript-disabled rendering. External-navigation regression checks intercept publisher/profile requests to test the click behaviour without depending on third-party availability.
 
 ## Deployment
 
