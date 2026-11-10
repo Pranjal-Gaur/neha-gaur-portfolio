@@ -2,7 +2,7 @@
 
 A responsive academic portfolio for Neha Gaur, built with plain HTML, CSS, and JavaScript. No framework, paid service, tracking, cookies, or build step is required.
 
-**Website:** https://pranjal-gaur.github.io/neha-gaur-portfolio/
+**Website:** https://neha-gaur.pages.dev/
 
 ## Updating content
 
@@ -32,7 +32,7 @@ npm ci
 npm run dev
 ```
 
-Open `http://127.0.0.1:4173/neha-gaur-portfolio/`.
+Open `http://127.0.0.1:4173/`. The preview also serves `/neha-gaur-portfolio/` for compatibility with the original GitHub Pages address.
 
 The site also works without JavaScript: navigation, all publications, DOI links, contact links, and the CV remain available. JavaScript adds mobile navigation, publication filters, copy-citation buttons, and the current footer year.
 
@@ -43,13 +43,24 @@ npx playwright install chromium
 npm test
 ```
 
-The browser checks cover desktop and mobile layouts, complete conference and achievement content, navigation, publication filtering, new-tab scholarly links that preserve the portfolio tab, citation copying and fallback, accessibility, assets, CV downloads, and JavaScript-disabled rendering. External-navigation regression checks intercept publisher/profile requests to test the click behaviour without depending on third-party availability.
+The browser checks cover desktop and mobile layouts, complete conference and achievement content, navigation, publication filtering, new-tab scholarly links that preserve the portfolio tab, citation copying and fallback, accessibility, canonical metadata, assets and CV downloads at both hosting base paths, and JavaScript-disabled rendering. External-navigation regression checks intercept publisher/profile requests to test the click behaviour without depending on third-party availability.
 
 ## Deployment
 
-GitHub Pages is configured to use **GitHub Actions**. Each push to `main` runs `.github/workflows/pages.yml`, which uploads only the `site/` directory. Development tooling and test files are not included in the deployed website.
+The primary website is hosted for free on **Cloudflare Pages**, using the GitHub-connected `neha-gaur` project. Each push to `main` automatically deploys the site with these settings:
 
-If the repository or host changes, update the canonical URL, social metadata, structured data, sitemap, robots file, the 404 page's base path, and the preview server's project prefix.
+- Repository: `Pranjal-Gaur/neha-gaur-portfolio`
+- Production branch: `main`
+- Framework preset: **None**
+- Build command: empty
+- Build output directory: `site`
+- Root directory: repository root (empty)
+
+The original address, https://pranjal-gaur.github.io/neha-gaur-portfolio/, remains available. GitHub Pages uses **GitHub Actions**: each push to `main` runs `.github/workflows/pages.yml`, which uploads only the `site/` directory. Neither host publishes development tooling or test files.
+
+Search and social metadata identify the Cloudflare address as canonical. The 404 page uses absolute canonical URLs for its assets and home link so it works at nested missing paths on either host without JavaScript.
+
+If the primary hostname changes, update the canonical URL, social metadata, structured data, sitemap, robots file, the 404 page's URLs, the regression checks, this README, and the repository's homepage setting. Keep the preview server's project prefix in sync if the GitHub repository is renamed.
 
 ## Assets and rights
 

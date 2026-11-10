@@ -210,27 +210,55 @@ test("blocked clipboard access reveals a selectable citation and explicit messag
   await expect(page.locator(".toast")).toContainText("Copy was unavailable");
 });
 
-test("all internal links and assets resolve at the GitHub project base path", async ({ page, request }) => {
+for (const basePath of ["/", "/neha-gaur-portfolio/"]) {
+  test(`all internal links and assets resolve at ${basePath}`, async ({ page, request }) => {
+    await page.goto(basePath);
+    const links = await page.locator('a[href^="./"], img[src], link[rel="stylesheet"], script[src]').evaluateAll((elements) =>
+      [...new Set(elements.map((element) => element.href || element.src))]
+    );
+    for (const url of links) {
+      const response = await request.get(url);
+      expect(response.ok(), url).toBe(true);
+    }
+    const anchors = await page.locator('a[href^="#"]').evaluateAll((elements) => elements.map((element) => element.hash.slice(1)));
+    for (const id of anchors) await expect(page.locator(`[id="${id}"]`)).toHaveCount(1);
+    await expect(page.locator('a[href="mailto:gaur.neha1947@gmail.com"]')).toHaveCount(1);
+    await expect(page.locator('a[href="https://orcid.org/0009-0004-0774-3242"]')).toHaveCount(1);
+    const pdf = await request.get(`${basePath}assets/Neha-Gaur-CV.pdf`);
+    expect(pdf.headers()["content-type"]).toBe("application/pdf");
+    expect((await pdf.body()).subarray(0, 5).toString()).toBe("%PDF-");
+    const [download] = await Promise.all([
+      page.waitForEvent("download"),
+      page.getByRole("link", { name: /View my full CV/ }).click()
+    ]);
+    expect(download.suggestedFilename()).toBe("Neha-Gaur-CV.pdf");
+  });
+}
+
+test("search, sharing, and error-page links use Neha's canonical address", async ({ page, request }) => {
+  const canonical = "https://neha-gaur.pages.dev/";
   await page.goto("./");
-  const links = await page.locator('a[href^="./"], img[src], link[rel="stylesheet"], script[src]').evaluateAll((elements) =>
-    [...new Set(elements.map((element) => element.href || element.src))]
-  );
-  for (const url of links) {
-    const response = await request.get(url);
-    expect(response.ok(), url).toBe(true);
+  await expect(page.locator('link[rel="canonical"]')).toHaveAttribute("href", canonical);
+  await expect(page.locator('meta[property="og:url"]')).toHaveAttribute("content", canonical);
+  await expect(page.locator('meta[property="og:image"]')).toHaveAttribute("content", `${canonical}assets/social-preview.jpg`);
+  const profile = JSON.parse(await page.locator('script[type="application/ld+json"]').textContent());
+  expect(profile.mainEntity.url).toBe(canonical);
+  expect(profile.mainEntity.image).toBe(`${canonical}assets/neha-gaur.webp`);
+  for (const [path, expected] of [
+    ["robots.txt", `Sitemap: ${canonical}sitemap.xml`],
+    ["sitemap.xml", `<loc>${canonical}</loc>`],
+    ["404.html", `href="${canonical}"`]
+  ]) {
+    const response = await request.get(path);
+    expect(response.ok(), path).toBe(true);
+    const html = await response.text();
+    expect(html).toContain(expected);
+    expect(html).not.toContain("pranjal-gaur.github.io");
+    if (path === "404.html") {
+      expect(html).toContain(`href="${canonical}assets/favicon.svg"`);
+      expect(html).toContain(`href="${canonical}styles.css?`);
+    }
   }
-  const anchors = await page.locator('a[href^="#"]').evaluateAll((elements) => elements.map((element) => element.hash.slice(1)));
-  for (const id of anchors) await expect(page.locator(`[id="${id}"]`)).toHaveCount(1);
-  await expect(page.locator('a[href="mailto:gaur.neha1947@gmail.com"]')).toHaveCount(1);
-  await expect(page.locator('a[href="https://orcid.org/0009-0004-0774-3242"]')).toHaveCount(1);
-  const pdf = await request.get("./assets/Neha-Gaur-CV.pdf");
-  expect(pdf.headers()["content-type"]).toBe("application/pdf");
-  expect((await pdf.body()).subarray(0, 5).toString()).toBe("%PDF-");
-  const [download] = await Promise.all([
-    page.waitForEvent("download"),
-    page.getByRole("link", { name: /View my full CV/ }).click()
-  ]);
-  expect(download.suggestedFilename()).toBe("Neha-Gaur-CV.pdf");
 });
 
 test("contact emails match their links and use clear sans-serif numerals", async ({ page }) => {
