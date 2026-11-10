@@ -166,22 +166,31 @@ h2 em { color: #637551; }
 .timeline-item > p:not(.timeline-date, .institution) { font-size: 12px; color: var(--body); line-height: 1.9; margin-top: 9px; }
 .timeline a { text-decoration: underline; }
 .community-section { background: #eeeee6; border-top: 1px solid var(--line); }
-.community-grid { display: grid; grid-template-columns: 1.15fr .85fr; gap: 70px; }
+.community-grid { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, .85fr); gap: 70px; align-items: start; }
+.community-sidebar { display: grid; gap: 30px; }
 .panel-label { font-family: var(--sans); text-transform: uppercase; font-size: 9px; letter-spacing: 1.4px; font-weight: 600; padding-bottom: 20px; border-bottom: 1px solid #cdd3c2; }
 .talk { display: grid; grid-template-columns: 43px 1fr; gap: 15px; padding: 23px 0; border-bottom: 1px solid #d6dacd; }
 .talk-year { font-size: 10px; padding-top: 2px; color: var(--muted); }
 .talk h4 { font-size: 12px; font-weight: 500; margin-bottom: 6px; }
 .talk p { font-size: 11px; color: var(--body); line-height: 1.9; }
+.talk .conference-location { color: var(--muted); margin-top: 3px; }
+.talk-role { display: inline-block; font-size: 8px; text-transform: uppercase; letter-spacing: .8px; line-height: 1.8; margin-top: 12px; padding: 2px 7px; color: var(--green); background: #e1e6d8; border: 1px solid #c7d0bc; border-radius: 3px; }
+.talk[data-participation="attendance"] .talk-role { color: #775c3a; background: #eee6d9; border-color: #d3c7b5; }
+.talk-titles { margin: 12px 0 0; padding-left: 16px; font-size: 11px; color: var(--body); line-height: 1.9; }
+.talk-titles li + li { margin-top: 8px; }
+.achievement-panel { padding: 28px; background: var(--white); border: 1px solid var(--line); border-radius: 5px; }
+.achievement-list { margin: 0; padding: 0; list-style: none; }
+.achievement { display: grid; grid-template-columns: 34px minmax(0, 1fr); gap: 13px; padding-block: 20px; border-bottom: 1px solid var(--line); }
+.achievement:last-child { padding-bottom: 0; border-bottom: 0; }
+.achievement-year { font-size: 10px; padding-top: 2px; color: var(--muted); }
+.achievement h4 { font-size: 12px; font-weight: 500; line-height: 1.7; }
+.achievement p { font-size: 11px; color: var(--body); margin-top: 5px; line-height: 1.9; }
 .outreach-panel { position: relative; padding: 32px 32px 29px; background: #e1e6d8; border: 1px solid #d1d8c6; border-radius: 5px; }
 .outreach-icon { position: absolute; right: 24px; top: 26px; color: #697b53; }
 .outreach-panel > .eyebrow { font-size: 8px; color: #50613d; margin-bottom: 18px; }
 .outreach-panel h3 { font-family: var(--serif); font-size: 37px; line-height: 1.08; letter-spacing: -.6px; margin-bottom: 22px; }
 .outreach-panel > p:not(.eyebrow) { font-size: 11px; color: #4c5944; margin-top: 13px; line-height: 1.9; }
 .outreach-panel strong { font-weight: 500; }
-.award-note { margin-top: 25px; border-top: 1px solid #c1cdb3; padding-top: 20px; }
-.award-note .eyebrow { font-size: 8px; color: #50613d; }
-.award-note p { font-size: 11px; margin-top: 11px; }
-.award-note p span { display: block; font-size: 10px; color: #58664d; }
 .nature-section { position: relative; height: 336px; overflow: hidden; background: #233f35; isolation: isolate; }
 .nature-section > img { position: absolute; width: 100%; height: 100%; object-fit: cover; object-position: center 46%; z-index: -2; }
 .nature-shade { position: absolute; inset: 0; background: linear-gradient(90deg, rgb(15 34 22 / 86%), rgb(20 38 25 / 38%) 80%); z-index: -1; }
@@ -281,6 +290,7 @@ h2 em { color: #637551; }
   .timeline h3 { font-size: 26px; }
   .timeline-date { font-size: 8px; }
   .community-grid { gap: 30px; }
+  .achievement-panel { padding: 23px; }
   .outreach-panel { padding: 26px 23px; }
   .outreach-panel h3 { font-size: 31px; }
   .outreach-icon { width: 29px; height: 29px; right: 18px; top: 21px; }
@@ -350,6 +360,7 @@ h2 em { color: #637551; }
   .timeline-date { font-size: 9px; }
   .timeline-item { padding-left: 28px; padding-bottom: 30px; }
   .community-grid { grid-template-columns: 1fr; gap: 30px; }
+  .achievement-panel { padding: 25px; }
   .talk { padding-block: 21px; }
   .talk h4 { font-size: 12px; }
   .outreach-panel { padding: 30px; }

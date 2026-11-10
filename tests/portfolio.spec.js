@@ -21,6 +21,103 @@ test("loads complete academic content, fonts, and images without errors", async 
   expect(errors).toEqual([]);
 });
 
+test("includes every conference presentation and participation entry from the CV", async ({ page }) => {
+  const entries = [
+    {
+      year: "2026", role: "Two contributed talks",
+      details: [
+        "TACL 2026", "12th Conference on Topology, Algebra, and Categories in Logic", "Kraków, Poland",
+        "A Unified Categorical Duality for Preminimal Negation and Beyond: Extending Compatibility Semantics Along Dunn’s Negation Hierarchy",
+        "Quad Rings and Quad Algebras: From Duality to Logical Perspective"
+      ]
+    },
+    {
+      year: "2026", role: "Contributed talk",
+      details: ["WIL 2026", "10th Women in Logic Workshop", "Lisbon, Portugal", "Quad Algebras and a 4-Valued Non-Classical Logic"]
+    },
+    {
+      year: "2026", role: "Attendee",
+      details: ["ISLA 2026", "11th Indian School on Logic and its Applications", "Krea University, India"]
+    },
+    {
+      year: "2025", role: "Contributed short talk",
+      details: ["WIL 2025", "9th Women in Logic Workshop", "Birmingham, UK", "A Rough Set Semantics for 4-valued Logic of Double Stone Algebras"]
+    },
+    {
+      year: "2025", role: "Attendee",
+      details: ["FSCD 2025", "10th International Conference on Formal Structures for Computation and Deduction", "Birmingham, UK"]
+    },
+    {
+      year: "2025", role: "Paper presentation",
+      details: ["IWM 2025", "Indian Women in Mathematics Annual Conference", "IIT Patna, India", "Categorical Aspects of Distributive Lattices with Preminimal Negations and its Extensions"]
+    },
+    {
+      year: "2025", role: "Paper presentation",
+      details: ["28th Conference on Applications of Logic in Philosophy and the Foundations of Mathematics", "Szklarska Poręba, Poland", "A Study on Logic Naturally Associated to Double Stone Algebras"]
+    },
+    {
+      year: "2025", role: "Attendee",
+      details: ["AWPL 2025", "6th Asian Workshop on Philosophical Logic", "Jadavpur University, Kolkata, India"]
+    },
+    {
+      year: "2025", role: "Poster",
+      details: ["ICLA 2025", "11th Indian Conference on Logic and its Applications", "ISI Kolkata, India", "Descriptive Compatibility Frames and its Extensions"]
+    },
+    {
+      year: "2024", role: "Attendee",
+      details: ["SAT 2024", "27th International Conference on Theory and Applications of Satisfiability Testing", "Pune, India"]
+    },
+    {
+      year: "2023", role: "Contributed talk",
+      details: ["ICLA 2023", "10th Indian Conference on Logic and its Applications", "IIT Indore, India", "Categorical Duality of Compatibility Frames"]
+    },
+    {
+      year: "2022", role: "Contributed talk",
+      details: ["ISLA 2022", "9th Indian School on Logic and its Applications", "IIT Kanpur, India", "Modal Logic"]
+    }
+  ];
+  await page.goto("./");
+  await expect(page.getByRole("heading", { name: "Conference presentations & participation" })).toBeVisible();
+  await expect(page.locator(".talk")).toHaveCount(entries.length);
+  for (const [index, { year, role, details }] of entries.entries()) {
+    const entry = page.locator(".talk").nth(index);
+    await expect(entry).toBeVisible();
+    await expect(entry.locator(".talk-year")).toHaveText(year);
+    await expect(entry.locator(".talk-role")).toHaveText(role);
+    for (const detail of details) await expect(entry).toContainText(detail);
+  }
+  await expect(page.locator('.talk[data-participation="attendance"]')).toHaveCount(4);
+  await expect(page.locator('.talk[data-participation="presentation"]')).toHaveCount(8);
+  await expect(page.locator(".talk-titles li")).toHaveCount(9);
+});
+
+test("includes all additional research achievements with exact years and ranks", async ({ page }) => {
+  const entries = [
+    { year: "2026", details: ["Ernst Mach Worldwide Grant", "OeAD", "Six-month postdoctoral fellowship at TU Wien"] },
+    { year: "2026", details: ["FWF Elise Richter project", "Participation", "Skolemization and Equality", "RIC1287724", "TU Wien"] },
+    { year: "2026", details: ["Women in Logic Workshop", "Travel grant"] },
+    { year: "2025", details: ["Women in Logic Workshop", "Travel grant"] },
+    { year: "2025", details: ["28th Conference on Applications of Logic in Philosophy and the Foundations of Mathematics", "Travel grant"] },
+    { year: "2022", details: ["UGC Senior Research Fellowship", "University Grants Commission, India"] },
+    { year: "2020", details: ["UGC Junior Research Fellowship", "University Grants Commission, India"] },
+    { year: "2019", details: ["UGC-NET (JRF)", "All India Rank 163"] },
+    { year: "2019", details: ["IIT-GATE", "All India Rank 625"] },
+    { year: "2016", details: ["IIT-JAM", "All India Rank 1048"] }
+  ];
+  await page.goto("./");
+  await expect(page.getByRole("heading", { name: "Additional research achievements" })).toBeVisible();
+  await expect(page.locator(".achievement")).toHaveCount(entries.length);
+  for (const [index, { year, details }] of entries.entries()) {
+    const entry = page.locator(".achievement").nth(index);
+    await expect(entry).toBeVisible();
+    await expect(entry.locator(".achievement-year")).toHaveText(year);
+    for (const detail of details) await expect(entry).toContainText(detail);
+  }
+  await expect(page.locator(".outreach-panel")).toContainText("Set Theory and Logic");
+  await expect(page.locator(".outreach-panel")).toContainText("BITS Hyderabad");
+  await expect(page.getByText("Selected recognition", { exact: true })).toHaveCount(0);
+});
+
 test("publication categories show the right papers and status", async ({ page }) => {
   await page.goto("./");
   await page.getByRole("button", { name: "Journal articles" }).click();
@@ -156,6 +253,8 @@ test("all content and navigation remain available without JavaScript", async ({ 
   await page.goto(baseURL);
   await expect(page.getByRole("navigation", { name: "Main navigation" })).toBeVisible();
   await expect(page.locator(".publication:visible")).toHaveCount(6);
+  await expect(page.locator(".talk:visible")).toHaveCount(12);
+  await expect(page.locator(".achievement:visible")).toHaveCount(10);
   await expect(page.getByRole("button", { name: "All work" })).toBeHidden();
   await expect(page.getByRole("button", { name: "Copy citation" }).first()).toBeHidden();
   await expect(page.getByRole("link", { name: /Download CV/ })).toBeVisible();

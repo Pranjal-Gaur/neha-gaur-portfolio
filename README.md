@@ -9,11 +9,14 @@ A responsive academic portfolio for Neha Gaur, built with plain HTML, CSS, and J
 - Edit `site/index.html` for the introduction, research, publications, career, talks, and contact details.
 - Replace `site/assets/Neha-Gaur-CV.pdf` to update the downloadable CV.
 - Replace the images in `site/assets/` to change the portrait or woodland banner.
-- Edit `site/styles.css` for colours, type, spacing, and responsive layouts.
+- Edit `site/styles.css` for colours, type, spacing, and responsive layouts. When changing styles, update the stylesheet version query in `site/index.html` and `site/404.html` so returning visitors receive the new CSS.
 - Publications have `data-type="journal"` or `data-type="preprint"`. When adding entries, also update the filter counts and the initial publication count.
+- Keep all conference presentations and participation in `.talks-panel`, and all additional research achievements in `.achievement-list`. These are complete lists from the supplied CV, not selected highlights: 12 conference entries (including both TACL talks) and 10 achievements. Preserve event names, locations, roles, talk titles, award years, and examination ranks.
 - Keep the page description, structured data, and dated affiliation in sync when Neha's position changes. The supplied CV lists the TU Wien appointment as September 2026 to February 2027.
 
 The supplied CV and introduction are the primary content sources. The three journal DOIs were checked against Crossref on 10 November 2026; journal metadata follows those records rather than uncertain volume or issue details in the CV. Preprints link to the supplied ResearchGate profile, not to guessed article URLs. ResearchGate blocked automated access, so its live profile content was not independently checked.
+
+The 2025 date for the 28th Conference on Applications of Logic in Philosophy and the Foundations of Mathematics comes from its matching travel-grant entry in the CV. Attendance is labelled separately from talks, paper presentations, and posters. FWF project participation is listed as participation rather than an individual grant award.
 
 Scholarly links open in a new tab, including paper titles, paper buttons, ResearchGate, ORCID, and the project DOI, leaving the portfolio open. Use native `target="_blank"` links with `rel="noopener noreferrer"` and accessible new-tab notices. Embedded previews may not support new tabs; use the public website in a regular browser rather than changing the site's navigation to work around a preview limitation. Journal DOIs lead to publishers, whose verification screens or subscription requirements are outside this website's control. Direct preprint links require verified individual URLs or files the author has permission to publish.
 
@@ -39,7 +42,7 @@ npx playwright install chromium
 npm test
 ```
 
-The browser checks cover desktop and mobile layouts, navigation, publication filtering, new-tab scholarly links that preserve the portfolio tab, citation copying and fallback, accessibility, assets, CV downloads, and JavaScript-disabled rendering. External-navigation regression checks intercept publisher/profile requests to test the click behaviour without depending on third-party availability.
+The browser checks cover desktop and mobile layouts, complete conference and achievement content, navigation, publication filtering, new-tab scholarly links that preserve the portfolio tab, citation copying and fallback, accessibility, assets, CV downloads, and JavaScript-disabled rendering. External-navigation regression checks intercept publisher/profile requests to test the click behaviour without depending on third-party availability.
 
 ## Deployment
 
